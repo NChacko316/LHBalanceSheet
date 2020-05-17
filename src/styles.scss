@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("./styles/bootstrap.min.scss");
+
+.custom-autocomplete {
+  padding: 0px;
+  .ui-autocomplete {
+    width: 100%;
+    .ui-autocomplete-input {
+      width: 100%;
+      border: 0px;
+    }
+  }
+}
+.custom-datepicker {
+  padding: 0px;
+  .ui-calendar {
+    width: 100%;
+    .ui-inputtext {
+      width: 100%;
+      border: 0px;
+    }
+  }
+}
+
+body .ui-table .ui-sortable-column.ui-state-highlight {
+  background-color: #f4f4f4;
+  color: #333333;
+}
+body .ui-table .ui-sortable-column.ui-state-highlight .ui-sortable-column-icon {
+  color: #848484;
+}
+body .ui-table .ui-sortable-column:focus {
+  box-shadow: none;
+}

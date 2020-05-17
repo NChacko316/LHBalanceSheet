@@ -11,7 +11,8 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.2.11",
+    "@angular/animations": "^8.2.14",
+    "@angular/cdk": "^9.2.3",
     "@angular/common": "~8.2.11",
     "@angular/compiler": "~8.2.11",
     "@angular/core": "~8.2.11",
@@ -19,6 +20,10 @@
     "@angular/platform-browser": "~8.2.11",
     "@angular/platform-browser-dynamic": "~8.2.11",
     "@angular/router": "~8.2.11",
+    "@ng-bootstrap/ng-bootstrap": "^5.3.0",
+    "bootstrap": "^4.5.0",
+    "primeicons": "^3.0.0-rc.1",
+    "primeng": "^9.0.6",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

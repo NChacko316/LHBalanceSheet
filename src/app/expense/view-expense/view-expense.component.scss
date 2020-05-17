@@ -1,0 +1,7 @@
+.horizontal-cards {
+  display: flex;
+  justify-content: space-between;
+  .card {
+    width: calc(33% - 10px);
+  }
+}

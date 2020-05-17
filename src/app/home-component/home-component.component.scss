@@ -1,0 +1,14 @@
+.horizontal-cards {
+  display: flex;
+  justify-content: space-between;
+  .card {
+    width: calc(33% - 10px);
+    &:nth-child(2),
+    &:nth-child(3) {
+      max-height: 150px;
+    }
+  }
+}
+.bold {
+  font-weight: bold;
+}

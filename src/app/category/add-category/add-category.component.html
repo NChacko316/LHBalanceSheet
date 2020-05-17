@@ -1,0 +1,54 @@
+<h2>Add a New Category</h2>
+<div class="row">
+  <div class="col-6">
+    <form>
+      <fieldset>
+        <div class="form-group">
+          <label for="categoryCode">Category Code</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryCode"
+            placeholder="Enter code"
+            required
+            [(ngModel)]="category.code"
+            name="code"
+          />
+        </div>
+        <div class="form-group">
+          <label for="categoryName">Category</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryName"
+            placeholder="Enter Category Name"
+            required
+            [(ngModel)]="category.category"
+            name="category"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select
+            class="form-control"
+            id="type"
+            required
+            [(ngModel)]="category.type"
+            name="type"
+          >
+            <option>Income</option>
+            <option>Expense</option>
+          </select>
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addNewCategory()"
+        >
+          Add Category
+        </button>
+      </fieldset>
+    </form>
+  </div>
+</div>

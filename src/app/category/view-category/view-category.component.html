@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+    <h2>Category List</h2>
+    <p-table
+      [columns]="cols"
+      [value]="categoryList"
+      sortField="code"
+      [scrollable]="true"
+      scrollHeight="400px"
+      [resizableColumns]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+            {{ col.header }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="deleteCategory(rowData._id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+    <h2>Add a New Category</h2>
+    <form>
+      <fieldset>
+        <div class="form-group">
+          <label for="categoryCode">Category Code</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryCode"
+            placeholder="Enter code"
+            required
+            [(ngModel)]="category.code"
+            name="code"
+          />
+        </div>
+        <div class="form-group">
+          <label for="categoryName">Category</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryName"
+            placeholder="Enter Category Name"
+            required
+            [(ngModel)]="category.category"
+            name="category"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select
+            class="form-control"
+            id="type"
+            required
+            [(ngModel)]="category.type"
+            name="type"
+          >
+            <option>Income</option>
+            <option>Expense</option>
+            <option>Transfer</option>
+          </select>
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addNewCategory()"
+        >
+          Add Category
+        </button>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+
+<div class="row mt-5">
+  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+      <h2>Add Opening Balance</h2>
+      <form>
+          <fieldset>
+            <div class="form-group">
+              <label for="openingBalance">Opening Balance</label>
+              <input
+                type="text"
+                class="form-control"
+                id="openingBalance"
+                placeholder="Enter Opening Balance"
+                required
+                [(ngModel)]="openingBalance"
+                name="openingBalance"
+              />
+            </div>
+            <button type="button"
+            class="btn btn-primary" (click)="addOpeningBalance()">
+            Add 
+          </button>
+      </fieldset>
+    </form>
+
+  </div> 
+  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+      <h2>Close Monthly Data</h2>
+      <form>
+          <fieldset>
+            <div class="form-group">
+              <label for="balanceAmount">Balance Amount</label>
+              <input
+                type="text"
+                class="form-control"
+                id="balanceAmount"
+                placeholder="Enter Balance Amount"
+                required
+                [(ngModel)]="monthyData.balance"
+                name="balanceAmount"
+              />
+            </div>
+            <div class="form-group">
+                <label for="month">Month</label>
+                <select
+                  class="form-control"
+                  id="month"
+                  required
+                  [(ngModel)]="monthyData.month"
+                  name="month"
+                >
+                <option value="0">Jan</option>
+                <option value="1">Feb</option>
+                <option value="2">Mar</option>
+                <option value="3">Apr</option>
+                <option value="4">May</option>
+                <option value="5">Jun</option>
+                <option value="6">Jul</option>
+                <option value="7">Aug</option>
+                <option value="8">Sep</option>
+                <option value="9">Oct</option>
+                <option value="10">Nov</option>
+                <option value="11">Dec</option>
+                </select>
+              </div>
+              <div class="form-group">
+                  <label for="year">Year</label>
+                  <select
+                    class="form-control"
+                    id="year"
+                    required
+                    [(ngModel)]="monthyData.year"
+                    name="year"
+                  >
+                    <option value = "2020">2020</option>
+                    <option value = "2021">2021</option>
+                    <option value = "2022">2022</option>
+                  </select>
+                </div>
+            <button type="button"
+            class="btn btn-primary" (click)="addMonthlyBalance()">
+            Add 
+          </button>
+      </fieldset>
+    </form>
+  </div>  
+  
+  <p-toast position="bottom-center"></p-toast>
+</div> 

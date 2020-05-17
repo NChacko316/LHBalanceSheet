@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <h2>Expense Tracker</h2>
+    
+    <div class="row">
+        <div class="col-sm-12 horizontal-cards">
+                <div class="card border-secondary  mb-3" style="max-width: 20rem;">
+                        <div class="card-header">
+                            <label for="filterBy">Filter By</label></div>
+                        <div class="card-body">
+                                <div class="form-group row">
+                                        <select
+                                          class="form-control"
+                                          id="filterBy"
+                                          required
+                                          [(ngModel)]="filterBy"
+                                          name="filterBy"
+                                          #expenseTransactionType="ngModel"
+                                          (change) = "getExpenseList()"
+                                          [ngClass] = "filterBy == 'all' ? 'col-sm-12' :'col-sm-5'"
+                                        >
+                                          <option value="all">All</option>
+                                          <option value="0">Jan</option>
+                                          <option value="1">Feb</option>
+                                          <option value="2">Mar</option>
+                                          <option value="3">Apr</option>
+                                          <option value="4">May</option>
+                                          <option value="5">Jun</option>
+                                          <option value="6">Jul</option>
+                                          <option value="7">Aug</option>
+                                          <option value="8">Sep</option>
+                                          <option value="9">Oct</option>
+                                          <option value="10">Nov</option>
+                                          <option value="11">Dec</option>
+                                        </select>
+                                        <select
+                                        class="form-control offset-sm-1 col-sm-5"
+                                        id="filterByYear"
+                                        required
+                                        [(ngModel)]="filterByYear"
+                                        name="filterByYear"
+                                        #filterYear="ngModel"
+                                        (change) = "getExpenseList()"
+                                        *ngIf = "filterBy != 'all'"
+                                      >
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                      </select>
+                                      </div>
+                        </div>
+                      </div>
+                    <div class="card border-success  mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Net Income</div>
+                        <div class="card-body">
+                          <h4 class="card-title">{{netIncome | currency: "&#8377;":"symbol":"1.0-0" }}</h4>
+                        </div>
+                      </div>
+                      <div class="card border-danger mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Net Expense</div>
+                        <div class="card-body">
+                          <h4 class="card-title">{{netExpense | currency: "&#8377;":"symbol":"1.0-0" }}</h4>
+                        </div>                      
+                </div>                
+        </div>
+    </div>
+    <p-table
+      [columns]="cols"
+      [value]="expenseList"
+      sortField="expenseDate"
+      [scrollable]="true"
+      scrollHeight="400px"
+      [resizableColumns]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th [pSortableColumn]="'expenseDate'">
+            Date
+            <p-sortIcon [field]="'expenseDate'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'category.code'">
+            Code
+            <p-sortIcon [field]="'category.code'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'category.category'">
+            Category Name
+            <p-sortIcon [field]="'category.category'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'category.description'">
+            Description
+            <p-sortIcon [field]="'category.description'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'category.type'">
+            Category type
+            <p-sortIcon [field]="'category.type'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'amount'">
+            Amount
+            <p-sortIcon [field]="'amount'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'transaction_type'">
+            Transaction Type
+            <p-sortIcon [field]="'transaction_type'"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns; index as i">
+            <div
+              *ngIf="
+                col.subfield;
+                then nested_object_content;
+                else normal_content
+              "
+            ></div>
+            <ng-template #nested_object_content>
+              {{ rowData[col.field][col.subfield] }}
+            </ng-template>
+            <ng-template #normal_content>
+              <span *ngIf="i != 0">{{ rowData[col.field] }}</span>
+              <span *ngIf="i == 0">{{ rowData[col.field] | date }}</span>
+            </ng-template>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="deleteExpense(rowData._id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-toast position="bottom-center"></p-toast>
+  </div>
+</div>

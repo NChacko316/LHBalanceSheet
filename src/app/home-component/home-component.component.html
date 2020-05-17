@@ -1,0 +1,268 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <h2 class="mb-3">Balance Sheet 
+      <span *ngIf = "filterType == 'all'">
+        - Overall
+      </span>
+        <span *ngIf = "filterType == 'monthly'">
+          <span >for the month of </span>
+          <span *ngIf = "filterByMonth == '0'">January,</span>
+          <span *ngIf = "filterByMonth == '1'">February,</span>
+          <span *ngIf = "filterByMonth == '2'">March,</span>
+          <span *ngIf = "filterByMonth == '3'">April,</span>
+          <span *ngIf = "filterByMonth == '4'">May,</span>
+          <span *ngIf = "filterByMonth == '5'">June,</span>
+          <span *ngIf = "filterByMonth == '6'">July,</span>
+          <span *ngIf = "filterByMonth == '7'">August,</span>
+          <span *ngIf = "filterByMonth == '8'">September,</span>
+          <span *ngIf = "filterByMonth == '9'">October,</span>
+          <span *ngIf = "filterByMonth == '10'">November,</span>
+          <span *ngIf = "filterByMonth == '11'">December,</span>
+        </span>
+      
+      <span *ngIf = "filterType == 'monthly' || filterType == 'yearly'">
+          <span> {{filterByYear}}</span>
+      </span>
+    </h2>
+    <div class="row mb-4">
+            <div class="col-sm-12 horizontal-cards">
+                    <div class="card border-secondary  mb-3" style="max-width: 20rem;">
+                            <div class="card-header">
+                                
+                                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                      <label class="btn btn-primary active">
+                                        <input type="radio" name="options" id="option1" autocomplete="off" checked="" (click) = "filterType = 'all';getExpenseList()"> All
+                                      </label>
+                                      <label class="btn btn-primary">
+                                        <input type="radio" name="options" id="option2" autocomplete="off"  (click) = "filterType = 'monthly';getExpenseList()"> Monthly
+                                      </label>
+                                      <label class="btn btn-primary">
+                                        <input type="radio" name="options" id="option3" autocomplete="off" (click) = "filterType = 'yearly';getExpenseList()"> Yearly
+                                      </label>
+                                      <label class="btn btn-primary">
+                                        <input type="radio" name="options" id="option4" autocomplete="off" (click) = "filterType = 'dateRange';"> Date Range
+                                      </label>
+                                    </div>
+                              </div>
+                            <div class="card-body">
+                                    <div>
+                                          <div class="form-group row mb-0" *ngIf = "filterType != 'dateRange'">
+                                              <select
+                                              class="form-control col-sm-5"
+                                              id="filterByMonth"
+                                              required
+                                              [(ngModel)]="filterByMonth"
+                                              name="filterByMonth"
+                                              #filterMonth="ngModel"
+                                              (change) = "getExpenseList()"
+                                              [disabled] = "filterType == 'all' || filterType == 'yearly'"
+                                            >
+                                              <option value="0">Jan</option>
+                                              <option value="1">Feb</option>
+                                              <option value="2">Mar</option>
+                                              <option value="3">Apr</option>
+                                              <option value="4">May</option>
+                                              <option value="5">Jun</option>
+                                              <option value="6">Jul</option>
+                                              <option value="7">Aug</option>
+                                              <option value="8">Sep</option>
+                                              <option value="9">Oct</option>
+                                              <option value="10">Nov</option>
+                                              <option value="11">Dec</option>
+                                            </select>
+                                              <select
+                                              class="form-control offset-sm-1 col-sm-5"
+                                              id="filterByYear"
+                                              required
+                                              [(ngModel)]="filterByYear"
+                                              name="filterByYear"
+                                              #filterYear="ngModel"
+                                              (change) = "getExpenseList()"
+                                              [disabled] = "filterType == 'all'"
+                                            >
+                                              <option value="2020">2020</option>
+                                              <option value="2021">2021</option>
+                                              <option value="2022">2022</option>
+                                            </select>
+                                          </div>
+                                            
+                                          <div *ngIf = "filterType == 'dateRange'">
+                                              <fieldset>
+                                                  <div class="form-group">
+                                                    <label for="fromDate">From Date</label>
+                                                    <p-calendar
+                                                      required
+                                                      class="form-control custom-datepicker"
+                                                      id="fromDate"
+                                                      [(ngModel)]="dateRange.fromDate"
+                                                      #fromDate="ngModel"
+                                                      name="fromDate"
+                                                    ></p-calendar>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="endDate">End Date</label>
+                                                      <p-calendar
+                                                        required
+                                                        class="form-control custom-datepicker"
+                                                        id="endDate"
+                                                        [(ngModel)]="dateRange.endDate"
+                                                        #endDate="ngModel"
+                                                        name="endDate"
+                                                      ></p-calendar>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary" (click) = "getExpenseListBasedOnDate()">Search</button>
+                                                    </div>
+                                                    <div *ngIf="invalidDateRange == true" class="alert alert-danger ng-star-inserted"> Invalid Date Range. </div>
+                                                 </fieldset>
+                                          </div>
+                                    </div>
+                            </div>
+                          </div>
+                        <div class="card border-success  mb-3" style="max-width: 20rem;">
+                            <div class="card-header">Net Income</div>
+                            <div class="card-body">
+                              <h4 class="card-title bold">{{netIncome | currency:"&#8377;":'symbol':'1.0-0'}}</h4>
+                            </div>
+                          </div>
+                          <div class="card border-danger mb-3" style="max-width: 20rem;">
+                            <div class="card-header">Net Expense</div>
+                            <div class="card-body">
+                              <h4 class="card-title bold">{{netExpense  | currency:"&#8377;":'symbol':'1.0-0'}}</h4>
+                            </div>                      
+                        </div>   
+                        <!-- <div class="card border-danger mb-3" style="max-width: 20rem;">
+                          <div class="card-header">Cash in Hand</div>
+                          <div class="card-body">
+                            <h4 class="card-title bold">{{cashInHand | currency:"&#8377;":'symbol':'1.0-0'}}</h4>
+                          </div>                      
+                      </div>               -->
+            </div>
+        </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <p-table
+          [columns]="incomeCols"
+          [value]="incomeResults"
+          sortField="incomeItem"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th [pSortableColumn]="'incomeItem'">
+                Receipt
+                <p-sortIcon [field]="'incomeItem'"></p-sortIcon>
+              </th>
+              <th [pSortableColumn]="'incomeAmount'">
+                Amount
+                <p-sortIcon [field]="'incomeAmount'"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr *ngIf="rowData.incomeItem.length > 0">
+              <td *ngFor="let col of columns">
+                {{ rowData[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="col-sm-6">
+        <p-table
+          [columns]="expenseCols"
+          [value]="expResults"
+          sortField="expenseItem"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th [pSortableColumn]="'expenseItem'">
+                Payment
+                <p-sortIcon [field]="'expenseItem'"></p-sortIcon>
+              </th>
+              <th [pSortableColumn]="'expenseAmount'">
+                Amount
+                <p-sortIcon [field]="'expenseAmount'"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr *ngIf="rowData.expenseItem.length > 0">
+              <td *ngFor="let col of columns; index as i">
+                {{ rowData[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm-6">
+        <p-table
+          [columns]="withdrawalCols"
+          [value]="withdrawals"
+          sortField="withdrawalItem"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th [pSortableColumn]="'withdrawalItem'">
+                Withdrawal
+                <p-sortIcon [field]="'withdrawalItem'"></p-sortIcon>
+              </th>
+              <th [pSortableColumn]="'withdrawalAmount'">
+                Amount
+                <p-sortIcon [field]="'withdrawalAmount'"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr >
+              <td *ngFor="let col of columns">
+                {{ rowData[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="col-sm-6">
+        <p-table
+          [columns]="depositCols"
+          [value]="deposits"
+          sortField="depositItem"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th [pSortableColumn]="'depositItem'">
+                Deposit To Bank
+                <p-sortIcon [field]="'depositItem'"></p-sortIcon>
+              </th>
+              <th [pSortableColumn]="'depositAmount'">
+                Amount
+                <p-sortIcon [field]="'depositAmount'"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr >
+              <td *ngFor="let col of columns; index as i">
+                {{ rowData[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+  </div>
+</div>

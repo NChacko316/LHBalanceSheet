@@ -1,0 +1,135 @@
+<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+  <h2>Add an Expense</h2>
+  <form>
+    <fieldset>
+      <div class="form-group">
+        <label for="expenseDate">Expense Date</label>
+        <p-calendar
+          required
+          class="form-control custom-datepicker"
+          id="expenseDate"
+          [(ngModel)]="expense.expenseDate"
+          #expenseDate="ngModel"
+          name="expenseDate"
+        ></p-calendar>
+        <div
+          class="alert alert-danger"
+          *ngIf="expenseDate.touched && !expenseDate.valid"
+        >
+          Expense Date is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="expenseCategory">Expense Category</label>
+        <p-autoComplete
+          required
+          class="form-control custom-autocomplete"
+          [(ngModel)]="categoryItem"
+          name="expenseCategory"
+          #expenseCategory="ngModel"
+          id="expenseCategory"
+          [suggestions]="categorySuggestions"
+          (onSelect)="updateCategory($event)"
+          (completeMethod)="searchSuggestions($event)"
+          [forceSelection]="true"
+          field="category"
+        >
+          <ng-template let-category pTemplate="item">
+            <span>{{ category.category }}</span>
+          </ng-template>
+        </p-autoComplete>
+        <div
+          class="alert alert-danger"
+          *ngIf="expenseCategory.touched && !expenseCategory.valid"
+        >
+          Expense Category is required.
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="code" class="col-sm-2 col-form-label">Code:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            readonly=""
+            class="form-control-plaintext"
+            id="code"
+            value="{{ expense.category.code }}"
+          />
+        </div>
+        <label for="catType" class="col-sm-2 col-form-label">Type:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            readonly=""
+            class="form-control-plaintext"
+            id="catType"
+            value="{{ expense.category.type }}"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="categoryDescription">Description</label>
+        <textarea
+          class="form-control"
+          id="categoryDescription"
+          rows="2"
+          [(ngModel)]="expense.category.description"
+          name="categoryDescription"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="expenseAmount">Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          id="expenseAmount"
+          placeholder="Enter amount"
+          required
+          [(ngModel)]="expense.amount"
+          name="expenseAmount"
+          #expenseAmount="ngModel"
+        />
+        <div
+          class="alert alert-danger"
+          *ngIf="expenseAmount.touched && !expenseAmount.valid"
+        >
+          Expense Amount is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="expenseTransactionType">Transaction Type</label>
+        <select
+          class="form-control"
+          id="expenseTransactionType"
+          required
+          [(ngModel)]="expense.transaction_type"
+          name="expenseTransactionType"
+          #expenseTransactionType="ngModel"
+        >
+          <option>Cash</option>
+          <option>FB_Cheque/Bank</option>
+          <option>CSB_Cheque/Bank</option>
+        </select>
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            expenseTransactionType.touched && !expenseTransactionType.valid
+          "
+        >
+          Expense Transaction Type is required.
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        (click)="saveExpense()"
+        [disabled]="expense.category.code == ''"
+      >
+        Add expense
+      </button>
+    </fieldset>
+  </form>
+  <p-toast position="bottom-center"></p-toast>
+</div>
